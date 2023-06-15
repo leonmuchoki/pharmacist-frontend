@@ -19,7 +19,8 @@ in progress
 a checkout system for a pharmacy or chemist
 
 ## Approach
--this is the front-end app. There is a backend developed in node js.
+-this is the front-end app. 
+-There is a backend developed in node js: https://github.com/leonmuchoki/pharmacist-backend
 -there is an api folder in src folder. It currently points to localhost:8081. You can update to the port your api running at.
 
 ## Technologies Used
