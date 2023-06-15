@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import {Modal} from '../../common';
-import { auth as authApi } from '../../../api';
+import { inventoryApi } from '../../../api';
 
-const LoginForm = () => {
-    const [login, setLogin] = useState(false);
+const InventoryAdd = () => {
+    const navigate = useNavigate();
+
     const [inputs, setInputs] = useState({
-        username: '',
-        password: '',
+        name: '',
+        description: '',
+        quantity: 0,
+        price: 0
     });
     const [status, setStatus] = useState({
         type: '',
@@ -31,21 +34,13 @@ const LoginForm = () => {
 
     const handleSubmit = async(event) => {
         event.preventDefault();
-        let api_base = process.env.REACT_APP_API_BASE;
-        let postPayload = {
-            email: inputs.username,
-            password: inputs.password
-        }
-        await authApi.signIn(postPayload)
+
+        await inventoryApi.addInventory(inputs)
             .then((result) => {
                 if (result.status) {
-                    localStorage.setItem('user_logged_in', 'true');
-                    localStorage.setItem('user_data', JSON.stringify(result.data));
-
-                    setLogin(true);
+                    console.log("inventory api results: ", result);
+                    navigate("/inventory")
                 } else {
-                    localStorage.setItem('user_logged_in', 'false');
-                    setLogin(false);
                     setStatus({
                         type: 'danger',
                         message: 'Something went wrong',
@@ -75,21 +70,19 @@ const LoginForm = () => {
         setIsOpen(false);
     };
 
-    return login ? (
-        <Navigate to={'/'} />
-    ) : (
+    return (
         <>
             <Modal modal={modal} closeModal={closeModal} isOpen={isOpen}>
                 {status.error}
             </Modal>
 
-            <div className="login-wrapper rounded-2xl px-8 md:px-16 pt-14 mt-6">
+            <div className="login-wrapper rounded-2xl px-8 md:px-16 pt-14 mt-1">
                 <h1
                     className={
                         'font-thin text-3xl text-center mb-6 flex items-end justify-center items-center'
                     }>
                     <span className={'font-bold pr-2 mr-2 border-gray-500 text-4xl'}>
-                        login
+                        Add New Item
                     </span>
                 </h1>
                 {/* <p className={'text-center text-sm mb-8 text-gray-800'}>
@@ -100,33 +93,61 @@ const LoginForm = () => {
                 </p> */}
                 <form onSubmit={handleSubmit}>
                     <div className={'my-3'}>
-                        <label className={'text-sm mb-1 inline-block'}>Email</label>
+                        <label className={'text-sm mb-1 inline-block'}>Item Name</label>
                         <input
                             type="text"
                             className={
                                 'p-2 rounded-lg w-full border-2 focus:border-primary hover:border-gray-400 outline-none dark:bg-gray-700'
                             }
-                            placeholder={'Username'}
-                            name={'username'}
+                            placeholder={'name'}
+                            name={'name'}
                             onChange={handleChange}
                             autoComplete={'off'}
                         />
                     </div>
                     <div className={'my-3'}>
-                        <label className={'text-sm mb-1 inline-block'}>Password</label>
+                        <label className={'text-sm mb-1 inline-block'}>Item Description</label>
                         <input
-                            type="password"
+                            type="text"
                             className={
                                 'p-2 rounded-lg w-full border-2 focus:border-primary hover:border-gray-400 outline-none dark:bg-gray-700'
                             }
-                            placeholder={'Password'}
-                            name={'password'}
+                            placeholder={'description'}
+                            name={'description'}
                             onChange={handleChange}
+                            autoComplete={'off'}
                         />
                     </div>
-                    <div className={'flex justify-end mt-6'}>
-                        <button type={'submit'} className={'py-3 btn-primary'}>
-                            Login
+                    <div className={'my-3'}>
+                        <label className={'text-sm mb-1 inline-block'}>Item Quantity</label>
+                        <input
+                            type="number"
+                            className={
+                                'p-2 rounded-lg w-full border-2 focus:border-primary hover:border-gray-400 outline-none dark:bg-gray-700'
+                            }
+                            placeholder={'quantity'}
+                            name={'quantity'}
+                            onChange={handleChange}
+                            autoComplete={'off'}
+                        />
+                    </div>
+                    <div className={'my-3'}>
+                        <label className={'text-sm mb-1 inline-block'}>Item Price</label>
+                        <input
+                            type="number"
+                            className={
+                                'p-2 rounded-lg w-full border-2 focus:border-primary hover:border-gray-400 outline-none dark:bg-gray-700'
+                            }
+                            placeholder={'price'}
+                            name={'price'}
+                            onChange={handleChange}
+                            autoComplete={'off'}
+                            step=".01"
+                        />
+                    </div>
+                    <div className={'flex justify-center mt-6'}>
+                        <button type={'submit'} className={'pt-3 pb-3 pl-5 pr-5 btn-primary rounded-lg  border-2 focus:border-primary hover:border-gray-400 outline-none dark:bg-gray-700'}>
+                            Submit
                         </button>
                     </div>
                 </form>
@@ -143,4 +164,4 @@ const LoginForm = () => {
 };
 
 
-export default LoginForm;
+export default InventoryAdd;

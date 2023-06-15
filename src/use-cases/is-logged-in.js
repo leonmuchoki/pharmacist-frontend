@@ -1,4 +1,4 @@
 export function isLoggedIn() {
-    const login = localStorage.getItem('wallet_login');
+    const login = localStorage.getItem('user_logged_in');
     return !!login;
 }
