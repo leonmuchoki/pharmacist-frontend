@@ -1,8 +1,8 @@
 # Project Name
-[Project description]
+pharmacist-frontend
 
 ## Demo
-Access demo at www.example.com
+in progress
 
 ## Table of Contents
 - [Rationale](#rationale)
@@ -12,15 +12,15 @@ Access demo at www.example.com
 - [Project Setup](#project-setup)
 - [Usage](#usage)
 - [Status](#status)
-- [Screenshots](#screenshots)
 - [Credits](#credits)
 - [License](#license)
 
 ## Rationale
-[A general non technical description of the application]
+a checkout system for a pharmacy or chemist
 
 ## Approach
-[Describe the conceptual design and the conventions used.]
+-this is the front-end app. There is a backend developed in node js.
+-there is an api folder in src folder. It currently points to localhost:8081. You can update to the port your api running at.
 
 ## Technologies Used
 - **Create React App** with **PWA**
@@ -31,11 +31,13 @@ Access demo at www.example.com
 - `tailwind`
 - `@headlessui/react`
 - `dotenv-cli`
-- [etc]
+- `redux toolkit`
 
 ## Features
-- [Feature 1]
-- [Feature 2]
+- authentication
+- inventory managment: add inventory, list inventory
+- inventory sales
+- customer management
 
 ## Project Setup
 - Download or clone the repository
@@ -45,17 +47,10 @@ Access demo at www.example.com
 ## Usage
 
 ## Status
-This project is `in development | actively maintained | on hold | abandoned`.
-
-## Screenshots
-![Writing](https://source.unsplash.com/O2MdroNurVw/600x200)
-
-## Credits
-Adopted from the works of, [name(s)]()
+This project is `in development`.
 
 List of Contributors:
-- [Name 1]()
-- [Name 2]()
+- [Leon Muchoki]()
 
 ## License
-[License]() @ [Author]()
+[MIT]() @ [Author]()
