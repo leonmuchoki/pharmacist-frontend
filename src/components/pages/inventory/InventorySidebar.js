@@ -7,10 +7,11 @@ export const InventorySidebar = () => {
             <Sidebar>
                 <Menu>
                     <SubMenu label="Inventory">
-                    <MenuItem  component={<Link to="/inventory/new" />}> Add </MenuItem>
-                    <MenuItem  component={<Link to="/inventory/new" />}> Update </MenuItem>
+                        <MenuItem  component={<Link to="/inventory/new" />}> Add </MenuItem>
+                        <MenuItem  component={<Link to="/inventory/new" />}> Update </MenuItem>
+                        <MenuItem  component={<Link to="/inventory" />}> List </MenuItem>
+                        <MenuItem  component={<Link to="/inventory/cart" />}> Cart </MenuItem>
                     </SubMenu>
-                    <MenuItem  component={<Link to="/inventory" />}> List </MenuItem>
                     <MenuItem  component={<Link to="/inventory" />}> Reports </MenuItem>
                 </Menu>
             </Sidebar>

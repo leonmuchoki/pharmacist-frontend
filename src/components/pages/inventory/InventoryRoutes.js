@@ -3,6 +3,7 @@ import { Inventory } from "./Inventory"
 import InventoryAdd  from "./InventoryAdd"
 import { InventoryList } from "./InventoryList"
 import { InventoryView } from "./InventoryView"
+import { InventoryCart } from "./inventoryCart"
 import { NotFound } from "../NotFound"
 
 export function InventoryRoutes() {
@@ -12,6 +13,7 @@ export function InventoryRoutes() {
         <Route index element={<InventoryList />} />
         <Route path=":id" element={<InventoryView />} />
         <Route path="new" element={<InventoryAdd />} />
+        <Route path="cart" element={<InventoryCart />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
