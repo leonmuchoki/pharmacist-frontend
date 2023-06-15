@@ -1,65 +1,25 @@
-import { useEffect, useState } from "react";
-import { inventoryApi } from "../../../api";
-import { useSelector, useDispatch } from 'react-redux'
-import { removeItemFromCart, clearCart } from "../../features/cart/cartSlice";
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react"
+import { inventoryApi } from "../../../api"
 
-export const InventoryCart = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const invetoryCartList = useSelector((state) => state.cart.cartItems);
-    console.log("InvetoryCart: ", invetoryCartList)
-    //items && setInventoryList(items);
+export const InventorySales = () => {
+    const [invetorySaleList, setInvetorySaleList] = useState([]);
+    useEffect(() => {
+        const fetchData=async()=> {
+            const sales = await inventoryApi.listInventorySales();
+            console.log("InventorySales::", sales)
+            setInvetorySaleList(sales.data.inventorySales);
+        }
+        fetchData();
+    }, [])
 
-    const removeFromCart = () => {}
-
-    const getTotal = () => {
-        const total = invetoryCartList.reduce((a,b) => {
-           return a + b.price*b.quantity
-        }, 0)
-        console.log("getTotal", total)
-        return total;
-    }
-
-    const getTotalPrice = () => {
-        return invetoryCartList.reduce((a,b) => a + +b.price, 0);
-    }
-
-    const getTotalQuantity = () => {
-        return invetoryCartList.reduce((a,b) => a + +b.quantity, 0);
-    }
-
-    const completeSale = () => {
-        console.log("complete sale: ", invetoryCartList);
-        invetoryCartList.map(async(x) => {
-            let payload = {
-                customerId: x.customerId,
-                inventoryId: x.inventoryId,
-                price: x.price,
-                quantity: x.quantity 
-            };
-            await inventoryApi.addInventorySale(payload);
-        });
-        dispatch(clearCart());
-        navigate("/inventory");
-        //todo: navigate to sale summary/receipt
-    }
-
-    const clearItemsInCart = () => {
-        dispatch(clearCart());
-        navigate("/inventory");
-    }
+    const viewDetails =()=> {}
 
     return (
+        <>
         <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
             <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                <div className="flex justify-end mr-3">
-                    <button onClick={() => clearItemsInCart()} className="text-red-600 hover:text-indigo-900">
-                        Clear Cart
-                    </button>
-                </div>
                 <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                     <tr>
@@ -73,13 +33,19 @@ export const InventoryCart = () => {
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
+                        Customer Type
+                    </th>
+                    <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
                         Price
                     </th>
                     <th
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                     >
-                        Quantity
+                        Quantity Sold
                     </th>
                     <th
                         scope="col"
@@ -93,16 +59,19 @@ export const InventoryCart = () => {
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                    {invetoryCartList && invetoryCartList.map(inv => (
+                    {invetorySaleList && invetorySaleList.map(inv => (
                     <tr key={inv.id}>
                         <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                             <div className="flex-shrink-0 h-10 w-10">
                             </div>
                             <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">{inv.name}</div>
+                            <div className="text-sm font-medium text-gray-900">{inv.inventory.name}</div>
                             </div>
                         </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{inv.customerId == 1 ? `Non-Customer` : `Customer`}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900">{inv.price}</div>
@@ -120,28 +89,18 @@ export const InventoryCart = () => {
                         </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button onClick={() => removeFromCart()} className="text-indigo-600 hover:text-indigo-900">
-                        Remove
+                        <button onClick={() => viewDetails()} className="text-indigo-600 hover:text-indigo-900">
+                        View
                         </button>
                         </td>
                     </tr>
                     ))}
-                    <tr>
-                        <td></td>
-                        <td>{getTotalPrice()}</td>
-                        <td>{getTotalQuantity()}</td>
-                        <td  className="px-6 py-4 whitespace-nowrap justify-end">{getTotal()}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button onClick={() => completeSale()}  className={'pt-3 pb-3 pl-5 pr-5 btn-primary rounded-lg  border-2 focus:border-primary hover:border-gray-400 outline-none dark:bg-gray-700'}>
-                            Complete Sale
-                            </button>
-                        </td>
-                    </tr>
                 </tbody>
                 </table>
             </div>
             </div>
         </div>
         </div>
-);
+        </>
+    )
 }

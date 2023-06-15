@@ -38,7 +38,7 @@ import { Link } from 'react-router-dom';
             return;
         }
         const item = {
-            customerId: 0,//customer or non-customer(0)
+            customerId: 1,//non-customer(0)
             inventoryId: itemSelected.id,
             name: itemSelected.name,
             price: itemSelected.price,
